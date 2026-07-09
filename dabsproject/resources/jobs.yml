@@ -1,0 +1,30 @@
+resources:
+  jobs:
+    Cricket_board:
+      name: Cricket_board
+      tasks:
+        - task_key: ingestion_layer
+          notebook_task:
+            notebook_path: ../src/ingestion_layer.ipynb
+            source: WORKSPACE
+        - task_key: bronze_layer
+          depends_on:
+            - task_key: ingestion_layer
+          notebook_task:
+            notebook_path: ../src/Bronze_layer.ipynb
+            source: WORKSPACE
+        - task_key: silver_layer
+          depends_on:
+            - task_key: bronze_layer
+          notebook_task:
+            notebook_path: ../src/silver_layer.ipynb
+            source: WORKSPACE
+        - task_key: gold_layer
+          depends_on:
+            - task_key: silver_layer
+          notebook_task:
+            notebook_path: ../src/Business_layer.ipynb
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
